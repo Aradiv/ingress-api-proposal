@@ -1,0 +1,427 @@
+openapi: 3.0.0
+info:
+  description: "This is an Proposal for an API for the argumented reality game Ingress by Niantic Inc. <br />
+  All Player based data has to be authorized by the respective player. (oauth) <br />
+  
+  All gamestate data is striped of any identifiable data. (no agentnames etc)"
+  version: "0.1.0"
+  title: "Ingress API"
+  termsOfService: "http://www.ingress.com/terms/"
+  contact:
+    email: "apiteam@swagger.io"
+  license:
+    name: "MIT"
+    url: "https://opensource.org/licenses/MIT"
+servers:
+  - url: "https://api.ingress.com"
+
+tags:
+- name: "agent"
+  description: "Everything related to a specified agent"
+- name: "stats"
+  description: "Agent Stats"
+- name: "inventory"
+  description: "inventory informations"
+- name: "portal"
+  description: "Access to portal data"
+- name: "mission"
+  description: "get mission info"
+
+
+paths:
+  /agentinfo:
+    get:
+      tags:
+      - "agent"
+      responses:
+        '200':    # status code
+          description: get the basic agent infos
+      security:
+        - ingressOAuth:
+          - agentinf
+
+  /profile/avatar/:
+    get:
+      tags:
+      - "agent"
+      responses:
+        '200':    # status code
+          description: get the list of all aqquired badges
+      security:
+        - ingressOAuth:
+          - profile:avatar
+  /profile/linked_account/:
+    get:
+      tags:
+      - "agent"
+      responses:
+        '200':    # status code
+          description: get the list of linked accounts
+      security:
+        - ingressOAuth:
+          - profile:linked_account
+  /profile/bagdes:
+    get:
+      tags:
+      - "agent"
+      responses:
+        '200':    # status code
+          description: get the list of all aqquired badges
+      security:
+        - ingressOAuth:
+          - profile:badges
+  
+  /stats/:
+    get:
+      tags:
+      - "stats"
+      responses:
+        '200':    # status code
+          description: get all time stats that are allowed via oauth scope.
+      security:
+        - ingressOAuth:
+          - stats
+          - stats:ap
+          - stats:unique_portals_visited
+          - stats:portals_discovered
+          - stats:seer_points
+          - stats:xm_collected
+          - stats:opr_agreements
+          - stats:distance_walked
+          - stats:resonator_deployed
+          - stats:links_created
+          - stats:control_fields_created
+          - stats:mind_units_captured
+          - stats:longest_link_ever_created
+          - stats:largest_control_field
+          - stats:xm_recharged
+          - stats:portals_captured
+          - stats:unique_portals_captured
+          - stats:mods_deployed
+          - stats:resonators_destroyed
+          - stats:portals_neutralized
+          - stats:enemy_links_destroyed
+          - stats:enemy_fields_destroyed
+          - stats:max_time_portal_held
+          - stats:max_time_link_maintained
+          - stats:max_link_length_x_days
+          - stats:max_time_field_held
+          - stats:largest_field_mu_x_days
+          - stats:unique_missions_completed
+          - stats:hacks
+          - stats:glyph_hack_points
+          - stats:longest_hacking_streak
+          - stats:mission_days_attended
+          - stats:nl_1331_meetups_attened
+  /stats/timeframe:
+    get:
+      tags:
+      - "stats"
+      responses:
+        '200':    # status code
+          description: get the stats for a specified timeframe
+      security:
+        - ingressOAuth:
+          - stats:timeframe
+          - stats:ap:timeframe
+          - stats:unique_portals_visited:timeframe
+          - stats:portals_discovered:timeframe
+          - stats:seer_points:timeframe
+          - stats:xm_collected:timeframe
+          - stats:opr_agreements:timeframe
+          - stats:distance_walked:timeframe
+          - stats:resonator_deployed:timeframe
+          - stats:links_created:timeframe
+          - stats:control_fields_created:timeframe
+          - stats:mind_units_captured:timeframe
+          - stats:longest_link_ever_created:timeframe
+          - stats:largest_control_field:timeframe
+          - stats:xm_recharged:timeframe
+          - stats:portals_captured:timeframe
+          - stats:unique_portals_captured:timeframe
+          - stats:mods_deployed:timeframe
+          - stats:resonators_destroyed:timeframe
+          - stats:portals_neutralized:timeframe
+          - stats:enemy_links_destroyed:timeframe
+          - stats:enemy_fields_destroyed:timeframe
+          - stats:max_time_portal_held:timeframe
+          - stats:max_time_link_maintained:timeframe
+          - stats:max_link_length_x_days:timeframe
+          - stats:max_time_field_held:timeframe
+          - stats:largest_field_mu_x_days:timeframe
+          - stats:unique_missions_completed:timeframe
+          - stats:hacks:timeframe
+          - stats:glyph_hack_points:timeframe
+          - stats:longest_hacking_streak:timeframe
+          - stats:mission_days_attended:timeframe
+          - stats:nl_1331_meetups_attened:timeframe
+  /missions/:
+    get: 
+      tags:
+      - mission
+      responses:
+        '200':
+          description: "get the missions in a specified area. If requested with oauth scope also indicates if the mission is already completed by the user or not"
+      security:
+      - apiKey: []
+      - ingressOAuth: 
+        - missions:completed
+  /missions/completed/:
+    get:
+      tags:
+      - "mission"
+      responses:
+        '200':
+          description: get the list of completed missions
+      security:
+        - ingressOAuth:
+          - missions:completed
+          - missions:completed:history
+
+  /missions/created:
+    get:
+      tags:
+      - "mission"
+      responses:
+        '200':
+          description: get the list of created missions
+      security:
+        - ingressOAuth:
+          - missions:created
+  
+  /inventory:
+    get:
+      tags:
+       - "inventory"
+      responses:
+         '200':
+           description: get the inventory
+      security:
+        - ingressOAuth:
+          - inventory
+          - inventory:resonators
+          - inventory:mods
+          - inventory:mods:shields
+          - inventory:mods:linkamp
+          - inventory:mods:forceamp
+          - inventory:mods:turret
+          - inventory:mods:heatsink
+          - inventory:mods:multihack
+          - inventory:mods
+          - inventory:bursters
+          - inventory:ultrastrikes
+          - inventory:viruses
+          - inventory:keys
+          - inventory:keys:keylocker
+          - inventory:powercubes
+          - inventory:capsules
+          - inventory:capsules:content
+          - inventory:fracker
+          - inventory:beacons
+  /portal/:
+    get:
+      tags:
+      - portal
+      responses:
+        '200':
+          description: "get static Portal details guid,lat,lng,name,description,picture"
+      security:
+      - apiKey: []
+  /portal/state:
+    get:
+      tags:
+      - portal
+      responses:
+        '200':
+          description: "get the current portal state (faction, level, resonators, mods). If requested with oAuth Scope returns which resonators are owned by the person requesting it."
+      security:
+      - ingressOAuth:
+        - portal:state
+      - apiKey: []
+  /map/:
+    get:
+      tags:
+      - portal
+      responses:
+        '200':
+          description: "returns portal state data for a given area (faction, level, links, fields)"
+      security:
+        - apiKey: []
+  /log/:
+    get:
+      tags:
+      - log
+      responses:
+        '200':
+          description: "returns log of all actions performed by the user"
+      security:
+      - ingressOAuth:
+        - log
+  /log/hacks/:
+    get:
+      tags:
+      - log
+      responses:
+        '200':
+          description: "returns hack log how many items where hacked when and where"
+      security:
+      - ingressOAuth:
+        - log:hacks
+  /log/hacks/sum:
+    get:
+      tags:
+      - log
+      responses:
+        '200':
+          description: "returns summed hack statistic"
+      security:
+      - ingressOAuth:
+        - log:hacks:sum
+  /log/unique_vists:
+    get:
+      tags:
+      - log
+      responses:
+        '200':
+          description: "returns the list of unique vists"
+      security:
+      - ingressOAuth:
+        - log:unique_vists
+  /log/unique_capture:
+    get:
+      tags:
+      - log
+      responses:
+        '200':
+          description: "returns the list of unique captures"
+      security:
+      - ingressOAuth:
+        - log:unique_captures
+components:
+  securitySchemes:
+    ingressOAuth:
+      type: oauth2
+      description: ""
+      flows: 
+        authorizationCode:
+          authorizationUrl: "/authorize"
+          tokenUrl: "/token"
+          scopes:
+            agentinfo: "get basic agent information (name, faction, level)"
+            
+            profile:avatar: "get profile avatar"
+            profile:badges: "get the list of aqquired badges"
+            profile:linked_accounts: "get linked accounts"
+            
+            stats: "get all current all time stats"
+            stats:timeframe: "get stats since a specified time"
+            stats:ap: "get the current ap"
+            stats:ap:timeframe: "get the ap made since a specified time"
+            
+            stats:unique_portals_visited: "get the total amount current unqiue vists"
+            stats:unique_portals_visited:timeframe: "get the amount of unique visits since a specified time"
+            stats:portals_discovered: "get the total amount of portals"
+            stats:portals_discovered:timeframe: ""
+            stats:seer_points: ""
+            stats:seer_points:timeframe: ""
+            stats:xm_collected: ""
+            stats:xm_collected:timeframe: ""
+            stats:opr_agreements: ""
+            stats:opr_agreements:timeframe: ""
+            
+            stats:distance_walked: ""
+            stats:distance_walked:timeframe: ""
+            
+            stats:resonator_deployed: ""
+            stats:resonator_deployed:timeframe: ""
+            stats:links_created: ""
+            stats:links_created:timeframe: ""
+            stats:control_fields_created: ""
+            stats:control_fields_created:timeframe: ""
+            stats:mind_units_captured: ""
+            stats:mind_units_captured:timeframe: ""
+            stats:longest_link_ever_created: ""
+            stats:longest_link_ever_created:timeframe: ""
+            stats:largest_control_field: ""
+            stats:largest_control_field:timeframe: ""
+            stats:xm_recharged: ""
+            stats:xm_recharged:timeframe: ""
+            stats:portals_captured: ""
+            stats:portals_captured:timeframe: ""
+            stats:unique_portals_captured: ""
+            stats:unique_portals_captured:timeframe: ""
+            stats:mods_deployed: ""
+            stats:mods_deployed:timeframe: ""
+            
+            stats:resonators_destroyed: ""
+            stats:resonators_destroyed:timeframe: ""
+            stats:portals_neutralized: ""
+            stats:portals_neutralized:timeframe: ""
+            stats:enemy_links_destroyed: ""
+            stats:enemy_links_destroyed:timeframe: ""
+            stats:enemy_fields_destroyed: ""
+            stats:enemy_fields_destroyed:timeframe: ""
+            
+            stats:max_time_portal_held: ""
+            stats:max_time_portals_held:timeframe: ""
+            stats:max_time_link_maintained: ""
+            stats:max_time_link_maintained:timeframe: ""
+            stats:max_link_length_x_days: ""
+            stats:max_link_length_x_days:timeframe: ""
+            stats:max_time_field_held: ""
+            stats:max_time_field_held:timeframe: ""
+            stats:largest_field_mu_x_days: ""
+            stats:largest_field_mu_x_days:timeframe: ""
+            
+            stats:unique_missions_completed: ""
+            stats:unique_missions_completed:timeframe: ""
+            
+            stats:hacks: ""
+            stats:hacks:timeframe: ""
+            stats:glyph_hack_points: ""
+            stats:glyph_hack_points:timeframe: ""
+            stats:longest_hacking_streak: ""
+            stats:longest_hacking_streak:timeframe: ""
+            
+            stats:mission_days_attended: ""
+            stats:mission_days_attened:timeframe: ""
+            stats:nl_1331_meetups_attened: ""
+            stats:nl_1331_meetups_attened:timeframe: ""
+            
+            missions:completed: "list of completed missions"
+            missions:completed:history: "list of completed missions with completition time"
+            missions:created: "list of created missions"
+            
+            invetory: "get the full player inventory"
+            inventory:resonators: ""
+            inventory:mods: ""
+            inventory:mods:shields: ""
+            inventory:mods:linkamp: ""
+            inventory:mods:forceamp: ""
+            inventory:mods:turret: ""
+            inventory:mods:heatsink: ""
+            inventory:mods:multihack: ""
+            inventory:mods:: ""
+            inventory:bursters: ""
+            inventory:ultrastrikes: ""
+            inventory:viruses: ""
+            inventory:keys: ""
+            inventory:keys:keylocker: ""
+            inventory:powercubes: ""
+            inventory:capsules: ""
+            inventory:capsules:content: ""
+            inventory:fracker: ""
+            inventory:beacons: ""
+            
+            log: "get full activity log"
+            log:hacks: "get exact hack output"
+            log:hacks:sum: "get summed hack statistic"
+            log:unique_vists: "get the list of unique portals visited"
+            log:unique_captures: "get the list of unique portals captured"
+    apiKey:
+      type: "apiKey"
+      name: "api_key"
+      in: "header"
+externalDocs:
+  description: "Find out more about Ingress"
+  url: "http://ingress.com"
