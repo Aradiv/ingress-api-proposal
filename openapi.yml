@@ -7,8 +7,6 @@ info:
   version: "0.1.0"
   title: "Ingress API"
   termsOfService: "http://www.ingress.com/terms/"
-  contact:
-    email: "apiteam@swagger.io"
   license:
     name: "MIT"
     url: "https://opensource.org/licenses/MIT"
